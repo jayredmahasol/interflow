@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [emailContent, setEmailContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [modalType, setModalType] = useState<'screening' | 'followup' | 'details'>('details');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleSendScreening = async (applicant: Applicant) => {
     setSelectedApplicant(applicant);
@@ -112,6 +113,8 @@ const Dashboard = () => {
               type="text" 
               placeholder="Search applicants..." 
               className="px-3 py-1.5 text-sm border border-dark-serpent/20 rounded-md focus:outline-none focus:ring-2 focus:ring-castleton-green/50"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
@@ -127,7 +130,11 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-dark-serpent/5 bg-white">
-              {applicants.map((applicant) => (
+              {applicants
+                .filter(applicant => 
+                  applicant.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+                )
+                .map((applicant) => (
                 <ApplicantRow 
                   key={applicant.id} 
                   applicant={applicant} 
