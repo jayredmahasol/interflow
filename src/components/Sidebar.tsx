@@ -1,8 +1,15 @@
 import React from 'react';
 import { LayoutDashboard, Users, Mail, Settings, LogOut, FileText } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 const Sidebar = () => {
+  const location = useLocation();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
     <div className="flex h-screen w-64 flex-col border-r border-dark-serpent/10 bg-paper">
       <div className="flex h-16 items-center px-6 border-b border-dark-serpent/10">
@@ -14,22 +21,54 @@ const Sidebar = () => {
       
       <div className="flex-1 overflow-y-auto py-4">
         <nav className="space-y-1 px-2">
-          <a href="#" className="group flex items-center rounded-md bg-dark-serpent/5 px-3 py-2 text-sm font-medium text-dark-serpent">
-            <LayoutDashboard className="mr-3 h-5 w-5 flex-shrink-0 text-dark-serpent/70" />
+          <Link 
+            to="/" 
+            className={cn(
+              "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              isActive('/') 
+                ? "bg-dark-serpent/10 text-dark-serpent" 
+                : "text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent"
+            )}
+          >
+            <LayoutDashboard className={cn("mr-3 h-5 w-5 flex-shrink-0 transition-colors", isActive('/') ? "text-dark-serpent" : "text-dark-serpent/50 group-hover:text-dark-serpent/70")} />
             Dashboard
-          </a>
-          <a href="#" className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent">
-            <Users className="mr-3 h-5 w-5 flex-shrink-0 text-dark-serpent/50 group-hover:text-dark-serpent/70" />
+          </Link>
+          <Link 
+            to="/applicants" 
+            className={cn(
+              "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              isActive('/applicants') 
+                ? "bg-dark-serpent/10 text-dark-serpent" 
+                : "text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent"
+            )}
+          >
+            <Users className={cn("mr-3 h-5 w-5 flex-shrink-0 transition-colors", isActive('/applicants') ? "text-dark-serpent" : "text-dark-serpent/50 group-hover:text-dark-serpent/70")} />
             Applicants
-          </a>
-          <a href="#" className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent">
-            <Mail className="mr-3 h-5 w-5 flex-shrink-0 text-dark-serpent/50 group-hover:text-dark-serpent/70" />
+          </Link>
+          <Link 
+            to="/screening" 
+            className={cn(
+              "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              isActive('/screening') 
+                ? "bg-dark-serpent/10 text-dark-serpent" 
+                : "text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent"
+            )}
+          >
+            <Mail className={cn("mr-3 h-5 w-5 flex-shrink-0 transition-colors", isActive('/screening') ? "text-dark-serpent" : "text-dark-serpent/50 group-hover:text-dark-serpent/70")} />
             Screening
-          </a>
-          <a href="#" className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent">
-            <Settings className="mr-3 h-5 w-5 flex-shrink-0 text-dark-serpent/50 group-hover:text-dark-serpent/70" />
+          </Link>
+          <Link 
+            to="/settings" 
+            className={cn(
+              "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              isActive('/settings') 
+                ? "bg-dark-serpent/10 text-dark-serpent" 
+                : "text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent"
+            )}
+          >
+            <Settings className={cn("mr-3 h-5 w-5 flex-shrink-0 transition-colors", isActive('/settings') ? "text-dark-serpent" : "text-dark-serpent/50 group-hover:text-dark-serpent/70")} />
             Settings
-          </a>
+          </Link>
         </nav>
       </div>
 

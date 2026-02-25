@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Applicant } from '@/types';
-import { mockApplicants } from '@/data/mockData';
+import { useApplicants } from '@/context/ApplicantContext';
 import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
 import ApplicantRow from '@/components/ApplicantRow';
@@ -11,7 +11,7 @@ import { Users, Mail, CheckCircle, Clock, Loader2, Send } from 'lucide-react';
 import { format } from 'date-fns';
 
 const Dashboard = () => {
-  const [applicants, setApplicants] = useState<Applicant[]>(mockApplicants);
+  const { applicants, updateApplicantStatus } = useApplicants();
   const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [emailContent, setEmailContent] = useState('');
@@ -61,18 +61,12 @@ const Dashboard = () => {
   const handleConfirmSend = () => {
     if (!selectedApplicant) return;
 
-    // Simulate sending email and updating status
-    const updatedApplicants = applicants.map(app => 
-      app.id === selectedApplicant.id 
-        ? { 
-            ...app, 
-            status: modalType === 'screening' ? 'Screening Sent' as const : app.status,
-            lastContacted: new Date().toISOString() 
-          } 
-        : app
-    );
+    const newStatus = modalType === 'screening' ? 'Screening Sent' : selectedApplicant.status;
     
-    setApplicants(updatedApplicants);
+    updateApplicantStatus(selectedApplicant.id, newStatus as Applicant['status'], {
+      lastContacted: new Date().toISOString()
+    });
+    
     setIsModalOpen(false);
     setSelectedApplicant(null);
     setEmailContent('');
