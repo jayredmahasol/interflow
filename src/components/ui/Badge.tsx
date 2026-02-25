@@ -3,16 +3,16 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-dark-serpent focus:ring-offset-2',
+  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-dark-serpent focus:ring-offset-2 dark:focus:ring-paper dark:focus:ring-offset-dark-serpent',
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-castleton-green text-white hover:bg-castleton-green/80',
-        secondary: 'border-transparent bg-saffron text-dark-serpent hover:bg-saffron/80',
-        destructive: 'border-transparent bg-red-500 text-white hover:bg-red-500/80',
-        outline: 'text-dark-serpent',
-        warning: 'border-transparent bg-earth-yellow text-dark-serpent hover:bg-earth-yellow/80',
-        neutral: 'border-transparent bg-sea-salt text-dark-serpent hover:bg-sea-salt/80 border-dark-serpent/10',
+        default: 'border-transparent bg-castleton-green text-white hover:bg-castleton-green/80 dark:bg-paper dark:text-dark-serpent dark:hover:bg-paper/90',
+        secondary: 'border-transparent bg-saffron text-dark-serpent hover:bg-saffron/80 dark:bg-saffron/80 dark:text-dark-serpent',
+        destructive: 'border-transparent bg-red-500 text-white hover:bg-red-500/80 dark:bg-red-900 dark:text-red-100 dark:hover:bg-red-900/80',
+        outline: 'text-dark-serpent dark:text-paper dark:border-paper/20',
+        warning: 'border-transparent bg-earth-yellow text-dark-serpent hover:bg-earth-yellow/80 dark:bg-earth-yellow/80 dark:text-dark-serpent',
+        neutral: 'border-transparent bg-sea-salt text-dark-serpent hover:bg-sea-salt/80 border-dark-serpent/10 dark:bg-paper/10 dark:text-paper dark:hover:bg-paper/20 dark:border-paper/10',
       },
     },
     defaultVariants: {

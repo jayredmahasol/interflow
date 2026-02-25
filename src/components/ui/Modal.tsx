@@ -17,14 +17,16 @@ const Modal = ({ isOpen, onClose, title, children, className }: ModalProps) => {
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-dark-serpent/50 backdrop-blur-sm">
-      <div className={cn("relative w-full max-w-lg rounded-xl bg-white p-6 shadow-xl animate-in fade-in zoom-in-95 duration-200", className)}>
+      <div className={cn("relative w-full max-w-lg rounded-xl bg-white p-6 shadow-xl animate-in fade-in zoom-in-95 duration-200 dark:bg-dark-serpent dark:border dark:border-paper/10", className)}>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-dark-serpent">{title}</h3>
-          <Button variant="ghost" size="icon" onClick={onClose}>
+          <h3 className="text-lg font-semibold text-dark-serpent dark:text-paper">{title}</h3>
+          <Button variant="ghost" size="icon" onClick={onClose} className="dark:text-paper dark:hover:bg-paper/10">
             <X className="h-4 w-4" />
           </Button>
         </div>
-        {children}
+        <div className="dark:text-paper">
+          {children}
+        </div>
       </div>
     </div>,
     document.body

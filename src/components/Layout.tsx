@@ -7,7 +7,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex h-screen overflow-hidden bg-sea-salt">
+    <div className="flex h-screen overflow-hidden bg-sea-salt dark:bg-dark-serpent transition-colors duration-300">
       <Sidebar />
       <main className="flex-1 overflow-y-auto p-8">
         {children}

@@ -23,23 +23,23 @@ const statusColorMap: Record<string, "default" | "secondary" | "destructive" | "
 
 const ApplicantRow: React.FC<ApplicantRowProps> = ({ applicant, onSendScreening, onFollowUp, onViewDetails }) => {
   return (
-    <tr className="border-b border-dark-serpent/5 hover:bg-paper/50 transition-colors">
+    <tr className="border-b border-dark-serpent/5 dark:border-paper/5 hover:bg-paper/50 dark:hover:bg-paper/5 transition-colors">
       <td className="py-4 px-6">
         <div className="flex items-center">
-          <div className="h-10 w-10 rounded-full bg-castleton-green/10 flex items-center justify-center text-castleton-green font-bold mr-3">
+          <div className="h-10 w-10 rounded-full bg-castleton-green/10 dark:bg-paper/10 flex items-center justify-center text-castleton-green dark:text-paper font-bold mr-3">
             {applicant.name.charAt(0)}
           </div>
           <div>
-            <p className="font-medium text-dark-serpent">{applicant.name}</p>
-            <p className="text-sm text-dark-serpent/60">{applicant.email}</p>
+            <p className="font-medium text-dark-serpent dark:text-paper">{applicant.name}</p>
+            <p className="text-sm text-dark-serpent/60 dark:text-paper/60">{applicant.email}</p>
           </div>
         </div>
       </td>
       <td className="py-4 px-6">
-        <p className="text-sm text-dark-serpent">{applicant.role}</p>
+        <p className="text-sm text-dark-serpent dark:text-paper">{applicant.role}</p>
       </td>
       <td className="py-4 px-6">
-        <p className="text-sm text-dark-serpent/60">{format(new Date(applicant.appliedDate), 'MMM d, yyyy')}</p>
+        <p className="text-sm text-dark-serpent/60 dark:text-paper/60">{format(new Date(applicant.appliedDate), 'MMM d, yyyy')}</p>
       </td>
       <td className="py-4 px-6">
         <Badge variant={statusColorMap[applicant.status] || 'outline'}>
@@ -49,18 +49,18 @@ const ApplicantRow: React.FC<ApplicantRowProps> = ({ applicant, onSendScreening,
       <td className="py-4 px-6 text-right">
         <div className="flex justify-end space-x-2">
           {applicant.status === 'Applied' && (
-            <Button size="sm" variant="outline" onClick={() => onSendScreening(applicant)}>
+            <Button size="sm" variant="outline" onClick={() => onSendScreening(applicant)} className="dark:text-paper dark:border-paper/20 dark:hover:bg-paper/10">
               <Mail className="mr-2 h-4 w-4" />
               Send Screening
             </Button>
           )}
           {(applicant.status === 'Screening Sent' || applicant.status === 'Screening Completed') && (
-            <Button size="sm" variant="outline" onClick={() => onFollowUp(applicant)}>
+            <Button size="sm" variant="outline" onClick={() => onFollowUp(applicant)} className="dark:text-paper dark:border-paper/20 dark:hover:bg-paper/10">
               <Clock className="mr-2 h-4 w-4" />
               Follow Up
             </Button>
           )}
-          <Button size="sm" variant="ghost" onClick={() => onViewDetails(applicant)}>
+          <Button size="sm" variant="ghost" onClick={() => onViewDetails(applicant)} className="dark:text-paper/70 dark:hover:text-paper dark:hover:bg-paper/10">
             Details
           </Button>
         </div>
