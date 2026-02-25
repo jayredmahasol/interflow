@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f5eedb;
+  --color-white: #ffffff;
+  --color-sea-salt: #F9F7F7;
+  --color-dark-serpent: #133020;
+  --color-castleton-green: #046241;
+  --color-saffron: #FFB347;
+  --color-earth-yellow: #FFC370;
+
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-paper text-dark-serpent font-sans antialiased;
+  }
+}
