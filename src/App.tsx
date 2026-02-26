@@ -10,6 +10,7 @@ import Dashboard from '@/pages/Dashboard';
 import Screening from '@/pages/Screening';
 import Applicants from '@/pages/Applicants';
 import Settings from '@/pages/Settings';
+import Notifications from '@/pages/Notifications.tsx';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/applicants" element={<Applicants />} />
             <Route path="/screening" element={<Screening />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/notifications" element={<Notifications />} />
           </Routes>
         </Router>
       </ApplicantProvider>
