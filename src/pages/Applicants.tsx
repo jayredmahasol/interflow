@@ -3,11 +3,9 @@ import Layout from '@/components/Layout';
 import { useApplicants } from '@/context/ApplicantContext';
 import ApplicantRow from '@/components/ApplicantRow';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Search, Filter, Download, Plus } from 'lucide-react';
+import { Search, Filter, Download, Plus, ChevronDown } from 'lucide-react';
 import { Applicant } from '@/types';
 
-// Simple Input component since we don't have one yet
 const SearchInput = ({ ...props }: React.InputHTMLAttributes<HTMLInputElement>) => (
   <div className="relative">
     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-dark-serpent/40 dark:text-paper/40" />
@@ -19,73 +17,102 @@ const SearchInput = ({ ...props }: React.InputHTMLAttributes<HTMLInputElement>) 
 );
 
 const Applicants = () => {
-  const { applicants, updateApplicantStatus } = useApplicants();
+  const { applicants } = useApplicants();
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [statusFilter, setStatusFilter] = useState<string>('All Status');
+  const [openFilter, setOpenFilter] = useState(false);
+
+  const statusOptions = [
+    'All Status',
+    'Applied',
+    'Screening Sent',
+    'Screening Completed',
+    'Interview Scheduled',
+    'Rejected',
+    'Offer Sent',
+  ];
 
   const filteredApplicants = applicants.filter(app => {
-    const matchesSearch = app.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          app.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          app.role.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
+    const matchesSearch =
+      app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      app.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      app.role.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === 'All Status' || app.status === statusFilter;
+
     return matchesSearch && matchesStatus;
   });
-
-  // Handlers (reusing logic or placeholders)
-  const handleSendScreening = (applicant: Applicant) => {
-    console.log('Send screening to', applicant.name);
-    // In a real app, this would open the modal
-  };
-
-  const handleFollowUp = (applicant: Applicant) => {
-    console.log('Follow up with', applicant.name);
-  };
-
-  const handleViewDetails = (applicant: Applicant) => {
-    console.log('View details for', applicant.name);
-  };
 
   return (
     <Layout>
       <div className="flex flex-col space-y-6">
+
+        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-dark-serpent dark:text-paper">Applicants</h1>
-            <p className="mt-2 text-dark-serpent/60 dark:text-paper/60">Manage and track all candidates.</p>
+            <h1 className="text-3xl font-bold text-dark-serpent dark:text-paper">
+              Applicants
+            </h1>
+            <p className="mt-2 text-dark-serpent/60 dark:text-paper/60">
+              Manage and track all candidates.
+            </p>
           </div>
+
           <Button className="bg-castleton-green hover:bg-castleton-green/90 dark:bg-paper dark:text-dark-serpent dark:hover:bg-paper/90">
             <Plus className="mr-2 h-4 w-4" />
             Add Candidate
           </Button>
         </div>
 
-        {/* Filters and Search */}
+        {/* Filters */}
         <div className="flex items-center justify-between gap-4 rounded-xl border border-dark-serpent/10 bg-white p-4 shadow-sm dark:bg-castleton-green/20 dark:border-paper/10">
+          
           <div className="flex flex-1 items-center gap-4">
+
+            {/* Search */}
             <div className="w-72">
-              <SearchInput 
-                placeholder="Search by name, email, or role..." 
+              <SearchInput
+                placeholder="Search by name, email, or role..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-dark-serpent/60 dark:text-paper/60" />
-              <select 
-                className="h-10 rounded-md border border-dark-serpent/20 bg-white px-3 text-sm text-dark-serpent focus:border-castleton-green focus:outline-none focus:ring-1 focus:ring-castleton-green dark:bg-dark-serpent/50 dark:border-paper/20 dark:text-paper"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="All">All Statuses</option>
-                <option value="Applied">Applied</option>
-                <option value="Screening Sent">Screening Sent</option>
-                <option value="Screening Completed">Screening Completed</option>
-                <option value="Interview Scheduled">Interview Scheduled</option>
-                <option value="Rejected">Rejected</option>
-                <option value="Offer Sent">Offer Sent</option>
-              </select>
+
+            {/* Custom Filter Dropdown */}
+            <div className="relative">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-dark-serpent/60 dark:text-paper/60" />
+
+                <button
+                  onClick={() => setOpenFilter(!openFilter)}
+                  className="flex items-center gap-2 h-10 rounded-md border border-dark-serpent/20 bg-white px-3 text-sm text-dark-serpent hover:border-castleton-green focus:outline-none focus:ring-1 focus:ring-castleton-green dark:bg-dark-serpent/50 dark:border-paper/20 dark:text-paper"
+                >
+                  {statusFilter}
+                  <ChevronDown className="h-4 w-4 opacity-60" />
+                </button>
+              </div>
+
+              {openFilter && (
+                <div className="absolute mt-2 w-48 rounded-md border border-dark-serpent/10 bg-white shadow-lg z-50 dark:bg-dark-serpent dark:border-paper/10">
+                  {statusOptions.map((status) => (
+                    <div
+                      key={status}
+                      onClick={() => {
+                        setStatusFilter(status);
+                        setOpenFilter(false);
+                      }}
+                      className="cursor-pointer px-3 py-2 text-sm text-dark-serpent hover:bg-castleton-green/10 hover:text-castleton-green dark:text-paper dark:hover:bg-paper/10"
+                    >
+                      {status}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+
           </div>
+
           <Button variant="outline" className="dark:text-paper dark:border-paper/20 dark:hover:bg-paper/10">
             <Download className="mr-2 h-4 w-4" />
             Export CSV
@@ -104,6 +131,7 @@ const Applicants = () => {
                 <th className="px-6 py-3 text-right">Actions</th>
               </tr>
             </thead>
+
             <tbody className="divide-y divide-dark-serpent/5 dark:divide-paper/5 bg-white dark:bg-transparent">
               {filteredApplicants.length === 0 ? (
                 <tr>
@@ -113,23 +141,19 @@ const Applicants = () => {
                 </tr>
               ) : (
                 filteredApplicants.map((applicant) => (
-                  <ApplicantRow 
-                    key={applicant.id} 
-                    applicant={applicant} 
-                    onSendScreening={handleSendScreening}
-                    onFollowUp={handleFollowUp}
-                    onViewDetails={handleViewDetails}
-                  />
+                  <ApplicantRow key={applicant.id} applicant={applicant} />
                 ))
               )}
             </tbody>
           </table>
+
           <div className="border-t border-dark-serpent/10 bg-sea-salt px-6 py-4 dark:bg-dark-serpent/40 dark:border-paper/10">
             <p className="text-sm text-dark-serpent/60 dark:text-paper/60">
               Showing {filteredApplicants.length} of {applicants.length} applicants
             </p>
           </div>
         </div>
+
       </div>
     </Layout>
   );

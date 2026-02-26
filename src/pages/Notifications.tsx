@@ -5,13 +5,12 @@ import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 
-// Mock data for notifications
 const initialNotifications = [
   {
     id: '1',
     title: 'New Application Received',
     description: 'Sarah Jenkins applied for Frontend Developer role.',
-    time: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 mins ago
+    time: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
     type: 'application',
     read: false,
   },
@@ -19,7 +18,7 @@ const initialNotifications = [
     id: '2',
     title: 'Screening Completed',
     description: 'Michael Chen scored 92% on the Python Assessment.',
-    time: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+    time: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
     type: 'screening',
     read: false,
   },
@@ -27,7 +26,7 @@ const initialNotifications = [
     id: '3',
     title: 'Interview Reminder',
     description: 'Interview with Jessica Lee starts in 1 hour.',
-    time: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), // 5 hours ago
+    time: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
     type: 'interview',
     read: true,
   },
@@ -35,7 +34,7 @@ const initialNotifications = [
     id: '4',
     title: 'New Application Received',
     description: 'David Kim applied for Backend Developer role.',
-    time: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+    time: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
     type: 'application',
     read: true,
   },
@@ -45,7 +44,7 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState(initialNotifications);
 
   const markAsRead = (id: string) => {
-    setNotifications(notifications.map(n => 
+    setNotifications(notifications.map(n =>
       n.id === id ? { ...n, read: true } : n
     ));
   };
@@ -77,13 +76,20 @@ const Notifications = () => {
     <Layout>
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-dark-serpent dark:text-paper">Notifications</h1>
+          <h1 className="text-3xl font-bold text-dark-serpent dark:text-paper">
+            Notifications
+          </h1>
           <p className="mt-2 text-dark-serpent/60 dark:text-paper/60">
             You have {unreadCount} unread notifications.
           </p>
         </div>
+
         {unreadCount > 0 && (
-          <Button variant="outline" onClick={markAllAsRead} className="dark:text-paper dark:border-paper/20 dark:hover:bg-paper/10">
+          <Button
+            variant="outline"
+            onClick={markAllAsRead}
+            className="dark:text-paper dark:border-paper/20 dark:hover:bg-paper/10"
+          >
             <CheckCircle className="mr-2 h-4 w-4" />
             Mark all as read
           </Button>
@@ -94,43 +100,51 @@ const Notifications = () => {
         {notifications.length === 0 ? (
           <div className="rounded-xl border border-dark-serpent/10 bg-white p-12 text-center dark:bg-castleton-green/20 dark:border-paper/10">
             <Bell className="mx-auto h-12 w-12 text-dark-serpent/20 dark:text-paper/20" />
-            <h3 className="mt-4 text-lg font-medium text-dark-serpent dark:text-paper">No notifications</h3>
-            <p className="mt-2 text-dark-serpent/60 dark:text-paper/60">You're all caught up!</p>
+            <h3 className="mt-4 text-lg font-medium text-dark-serpent dark:text-paper">
+              No notifications
+            </h3>
+            <p className="mt-2 text-dark-serpent/60 dark:text-paper/60">
+              You're all caught up!
+            </p>
           </div>
         ) : (
           notifications.map((notification) => (
-            <div 
+            <div
               key={notification.id}
               className={cn(
                 "relative flex items-start space-x-4 rounded-xl border p-4 transition-colors",
-                notification.read 
-                  ? "bg-white border-dark-serpent/10 dark:bg-castleton-green/10 dark:border-paper/5" 
-                  : "bg-blue-50/50 border-blue-100 dark:bg-blue-900/10 dark:border-blue-800"
+                notification.read
+                  ? "bg-white border-dark-serpent/10 dark:bg-castleton-green/10 dark:border-paper/5"
+                  : "bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800"
               )}
             >
-              <div className={cn(
-                "rounded-full p-2",
-                notification.read ? "bg-sea-salt dark:bg-paper/5" : "bg-white dark:bg-paper/10"
-              )}>
+              <div
+                className={cn(
+                  "rounded-full p-2",
+                  notification.read
+                    ? "bg-sea-salt dark:bg-paper/5"
+                    : "bg-white dark:bg-paper/10"
+                )}
+              >
                 {getIcon(notification.type)}
               </div>
+
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h4 className={cn(
-                    "text-sm font-semibold",
-                    notification.read ? "text-dark-serpent dark:text-paper" : "text-dark-serpent dark:text-paper"
-                  )}>
+                  <h4 className="text-sm font-semibold text-dark-serpent dark:text-paper">
                     {notification.title}
                   </h4>
                   <span className="text-xs text-dark-serpent/40 dark:text-paper/40">
                     {format(new Date(notification.time), 'h:mm a')}
                   </span>
                 </div>
+
                 <p className="mt-1 text-sm text-dark-serpent/70 dark:text-paper/70">
                   {notification.description}
                 </p>
+
                 {!notification.read && (
-                  <button 
+                  <button
                     onClick={() => markAsRead(notification.id)}
                     className="mt-2 text-xs font-medium text-castleton-green hover:underline dark:text-green-400"
                   >
@@ -138,7 +152,8 @@ const Notifications = () => {
                   </button>
                 )}
               </div>
-              <button 
+
+              <button
                 onClick={() => deleteNotification(notification.id)}
                 className="absolute top-4 right-4 text-dark-serpent/20 hover:text-dark-serpent/60 dark:text-paper/20 dark:hover:text-paper/60"
               >
