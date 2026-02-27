@@ -24,7 +24,7 @@ const Applicants = () => {
 
   const statusOptions = [
     'All Status',
-    'Applied',
+    'To Be Reviewed',
     'Screening Sent',
     'Screening Completed',
     'Interview Scheduled',

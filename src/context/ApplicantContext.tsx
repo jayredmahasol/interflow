@@ -6,6 +6,7 @@ interface ApplicantContextType {
   applicants: Applicant[];
   updateApplicantStatus: (id: string, status: Applicant['status'], additionalData?: Partial<Applicant>) => void;
   addApplicant: (applicant: Applicant) => void;
+  deleteApplicant: (id: string) => void;
 }
 
 const ApplicantContext = createContext<ApplicantContextType | undefined>(undefined);
@@ -22,11 +23,15 @@ export const ApplicantProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addApplicant = (applicant: Applicant) => {
-    setApplicants((prev) => [...prev, applicant]);
+    setApplicants((prev) => [...prev, { ...applicant, status: 'To Be Reviewed' }]);
+  };
+
+  const deleteApplicant = (id: string) => {
+    setApplicants((prev) => prev.filter((app) => app.id !== id));
   };
 
   return (
-    <ApplicantContext.Provider value={{ applicants, updateApplicantStatus, addApplicant }}>
+    <ApplicantContext.Provider value={{ applicants, updateApplicantStatus, addApplicant, deleteApplicant }}>
       {children}
     </ApplicantContext.Provider>
   );
