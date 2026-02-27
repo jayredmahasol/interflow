@@ -6,51 +6,18 @@ import StatCard from '@/components/StatCard';
 import ApplicantRow from '@/components/ApplicantRow';
 import Modal from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { generateFollowUpEmail } from '@/services/ai';
 import { Users, Mail, CheckCircle, Clock } from 'lucide-react';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-  const { applicants, updateApplicantStatus, deleteApplicant } = useApplicants();
-  const navigate = useNavigate();
+  const { applicants } = useApplicants();
   const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleProceed = (_applicant: Applicant) => {
-    navigate('/applicants');
-  };
-
   const handleViewDetails = (applicant: Applicant) => {
     setSelectedApplicant(applicant);
     setIsModalOpen(true);
-  };
-
-  const handleFollowUp = async (applicant: Applicant) => {
-    try {
-      await generateFollowUpEmail(applicant.name, applicant.role, applicant.status);
-      updateApplicantStatus(applicant.id, applicant.status, {
-        lastContacted: new Date().toISOString()
-      });
-    } catch (error) {
-      console.error('Failed to send follow-up email', error);
-      alert('Failed to send follow-up email. Please try again.');
-    }
-  };
-
-  const handleScheduleInterview = (applicant: Applicant) => {
-    updateApplicantStatus(applicant.id, 'Interview Scheduled');
-  };
-
-  const handleReject = (applicant: Applicant) => {
-    updateApplicantStatus(applicant.id, 'Rejected');
-  };
-
-  const handleDelete = (applicant: Applicant) => {
-    const confirmed = window.confirm('Are you sure you want to remove this applicant?');
-    if (!confirmed) return;
-    deleteApplicant(applicant.id);
   };
 
   const reviewApplicants = applicants.filter((app) => app.status === 'To Be Reviewed');
@@ -108,7 +75,6 @@ const Dashboard = () => {
                   <th className="px-6 py-3.5">Role</th>
                   <th className="px-6 py-3.5">Applied Date</th>
                   <th className="px-6 py-3.5">Status</th>
-                  <th className="px-6 py-3.5 text-right">Next Step</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-dark-serpent/5 bg-white dark:divide-paper/5 dark:bg-transparent">
@@ -116,17 +82,12 @@ const Dashboard = () => {
                   <ApplicantRow 
                     key={applicant.id} 
                     applicant={applicant} 
-                    onProceed={handleProceed}
-                    onFollowUp={handleFollowUp}
-                    onScheduleInterview={handleScheduleInterview}
-                    onReject={handleReject}
-                    onDelete={handleDelete}
                     onViewDetails={handleViewDetails}
                   />
                 ))}
                 {filteredApplicants.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-dark-serpent/60 dark:text-paper/60">
+                    <td colSpan={4} className="px-6 py-8 text-center text-dark-serpent/60 dark:text-paper/60">
                       No applicants found matching "{searchQuery}"
                     </td>
                   </tr>

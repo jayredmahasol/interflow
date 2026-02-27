@@ -3,8 +3,10 @@ import Layout from '@/components/Layout';
 import { useApplicants } from '@/context/ApplicantContext';
 import ApplicantRow from '@/components/ApplicantRow';
 import { Button } from '@/components/ui/Button';
+import Modal from '@/components/ui/Modal';
 import { Search, Filter, Download, Plus, ChevronDown } from 'lucide-react';
 import { Applicant } from '@/types';
+import { format } from 'date-fns';
 
 const SearchInput = ({ ...props }: React.InputHTMLAttributes<HTMLInputElement>) => (
   <div className="relative">
@@ -21,6 +23,8 @@ const Applicants = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('All Status');
   const [openFilter, setOpenFilter] = useState(false);
+  const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const statusOptions = [
     'All Status',
@@ -43,6 +47,11 @@ const Applicants = () => {
 
     return matchesSearch && matchesStatus;
   });
+
+  const handleViewDetails = (applicant: Applicant) => {
+    setSelectedApplicant(applicant);
+    setIsModalOpen(true);
+  };
 
   return (
     <Layout>
@@ -128,20 +137,19 @@ const Applicants = () => {
                 <th className="px-6 py-3">Role</th>
                 <th className="px-6 py-3">Applied Date</th>
                 <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3 text-right">Actions</th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-dark-serpent/5 dark:divide-paper/5 bg-white dark:bg-transparent">
               {filteredApplicants.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-dark-serpent/60 dark:text-paper/60">
+                  <td colSpan={4} className="px-6 py-12 text-center text-dark-serpent/60 dark:text-paper/60">
                     No applicants found matching your criteria.
                   </td>
                 </tr>
               ) : (
                 filteredApplicants.map((applicant) => (
-                  <ApplicantRow key={applicant.id} applicant={applicant} />
+                  <ApplicantRow key={applicant.id} applicant={applicant} onViewDetails={handleViewDetails} />
                 ))
               )}
             </tbody>
@@ -153,6 +161,52 @@ const Applicants = () => {
             </p>
           </div>
         </div>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedApplicant(null);
+          }}
+          title="Applicant Details"
+          className="max-w-2xl"
+        >
+          {selectedApplicant ? (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-medium text-dark-serpent/60 uppercase dark:text-paper/60">Name</label>
+                  <p className="text-dark-serpent font-medium dark:text-paper">{selectedApplicant.name}</p>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-dark-serpent/60 uppercase dark:text-paper/60">Email</label>
+                  <p className="text-dark-serpent font-medium dark:text-paper">{selectedApplicant.email}</p>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-dark-serpent/60 uppercase dark:text-paper/60">Role</label>
+                  <p className="text-dark-serpent font-medium dark:text-paper">{selectedApplicant.role}</p>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-dark-serpent/60 uppercase dark:text-paper/60">Applied Date</label>
+                  <p className="text-dark-serpent font-medium dark:text-paper">{format(new Date(selectedApplicant.appliedDate), 'PPP')}</p>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-dark-serpent/60 uppercase dark:text-paper/60">Status</label>
+                  <p className="text-dark-serpent font-medium dark:text-paper">{selectedApplicant.status}</p>
+                </div>
+                {selectedApplicant.screeningScore && (
+                  <div>
+                    <label className="text-xs font-medium text-dark-serpent/60 uppercase dark:text-paper/60">Screening Score</label>
+                    <p className="text-dark-serpent font-medium dark:text-paper">{selectedApplicant.screeningScore}%</p>
+                  </div>
+                )}
+              </div>
+              <div className="flex justify-end pt-4 border-t border-dark-serpent/10 dark:border-paper/10">
+                <Button onClick={() => setIsModalOpen(false)} className="dark:bg-paper dark:text-dark-serpent dark:hover:bg-paper/90">Close</Button>
+              </div>
+            </div>
+          ) : null}
+        </Modal>
 
       </div>
     </Layout>
