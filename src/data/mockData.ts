@@ -7,7 +7,7 @@ export const mockApplicants: Applicant[] = [
     email: 'alex.rivera@example.com',
     role: 'Frontend Engineering Intern',
     appliedDate: '2025-02-20',
-    status: 'Applied',
+    status: 'To Be Reviewed',
   },
   {
     id: '2',
@@ -34,7 +34,7 @@ export const mockApplicants: Applicant[] = [
     email: 'emily.davis@example.com',
     role: 'Backend Engineering Intern',
     appliedDate: '2025-02-22',
-    status: 'Applied',
+    status: 'To Be Reviewed',
   },
   {
     id: '5',
