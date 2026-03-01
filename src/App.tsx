@@ -7,10 +7,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApplicantProvider } from '@/context/ApplicantContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import Dashboard from '@/pages/Dashboard';
-import Screening from '@/pages/Screening';
 import Applicants from '@/pages/Applicants';
 import Settings from '@/pages/Settings';
-import Notifications from '@/pages/Notifications';
 
 export default function App() {
   return (
@@ -20,8 +18,6 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/applicants" element={<Applicants />} />
-            <Route path="/screening" element={<Screening />} />
-            <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </Router>

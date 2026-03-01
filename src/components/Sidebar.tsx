@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Users, Mail, Settings, LogOut, FileText, Moon, Sun, Bell } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, LogOut, FileText, Moon, Sun } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/context/ThemeContext';
@@ -47,30 +47,6 @@ const Sidebar = () => {
           >
             <Users className={cn("mr-3 h-5 w-5 flex-shrink-0 transition-colors", isActive('/applicants') ? "text-dark-serpent dark:text-paper" : "text-dark-serpent/50 group-hover:text-dark-serpent/70 dark:text-paper/50 dark:group-hover:text-paper/70")} />
             Applicants
-          </Link>
-          <Link 
-            to="/screening" 
-            className={cn(
-              "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
-              isActive('/screening') 
-                ? "bg-dark-serpent/10 text-dark-serpent dark:bg-paper/10 dark:text-paper" 
-                : "text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent dark:text-paper/70 dark:hover:bg-paper/5 dark:hover:text-paper"
-            )}
-          >
-            <Mail className={cn("mr-3 h-5 w-5 flex-shrink-0 transition-colors", isActive('/screening') ? "text-dark-serpent dark:text-paper" : "text-dark-serpent/50 group-hover:text-dark-serpent/70 dark:text-paper/50 dark:group-hover:text-paper/70")} />
-            Screening
-          </Link>
-          <Link 
-            to="/notifications" 
-            className={cn(
-              "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
-              isActive('/notifications') 
-                ? "bg-dark-serpent/10 text-dark-serpent dark:bg-paper/10 dark:text-paper" 
-                : "text-dark-serpent/70 hover:bg-dark-serpent/5 hover:text-dark-serpent dark:text-paper/70 dark:hover:bg-paper/5 dark:hover:text-paper"
-            )}
-          >
-            <Bell className={cn("mr-3 h-5 w-5 flex-shrink-0 transition-colors", isActive('/notifications') ? "text-dark-serpent dark:text-paper" : "text-dark-serpent/50 group-hover:text-dark-serpent/70 dark:text-paper/50 dark:group-hover:text-paper/70")} />
-            Notifications
           </Link>
           <Link 
             to="/settings" 
